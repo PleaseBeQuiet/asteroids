@@ -22,11 +22,12 @@ def main():
     Player.containers = (updatable, drawable) # type: ignore
     Asteroid.containers = (asteroids, updatable, drawable) # type: ignore
     AsteroidField.containers = (updatable) # type: ignore
-    Shot.containers = (updatable, drawable) # type: ignore
+    Shot.containers = (shots, updatable, drawable) # type: ignore
 
     player = Player(x = SCREEN_WIDTH / 2, y =  SCREEN_HEIGHT / 2)
     asteroid_field = AsteroidField()
 
+    # Game Loop
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -38,6 +39,11 @@ def main():
             if asteroid.collision(player):
                 print("Game over!")
                 return
+
+            for shot in shots:
+                if asteroid.collision(shot):
+                    shot.kill()
+                    asteroid.split()
 
         screen.fill("black")
 
